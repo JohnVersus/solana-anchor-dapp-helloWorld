@@ -36,6 +36,12 @@ cd to the project
 cd anchor_hello_world
 ```
 
+build the project with
+
+```bash
+anchor build
+```
+
 ---
 
 ### `Testing in frontend`
