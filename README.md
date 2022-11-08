@@ -2,127 +2,54 @@
 
 ---
 
-### `Rust Installation & Setup`
+### `Anchor Installation & Setup`
 
-Run the following command in Unix terminal to install rust and cargo.
+`Refer this` [docs](https://www.anchor-lang.com/docs/installation#anchor) `for more details installing Anchor and the required prerequisites.`
+
+Run the following command in terminal to install anchor avm.
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+cargo install --git https://github.com/project-serum/anchor avm --locked --force
 ```
 
-Once installed setup locla env PATH as instructed after the installation process.
+Once installed update and set anchor to the latest version.
 
-`Refer` [Rustup docs](https://rustup.rs/) `for installing rust on windows machine.`
+```bash
+avm install latest
+
+avm use latest
+```
 
 ---
 
-### `Solana Installation & Setup`
+### `Creating a New Smart contract`
 
-Install the solana CLI and the set the local env PATH.
-
-```bash
-  sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
-```
-
-Create a new Solana keypair
+Create a hello world project folder using
 
 ```bash
-mkdir ~/my-solana-wallet
-
-solana-keygen new --outfile ~/my-solana-wallet/my-keypair.json
+anchor init anchor_hello_world
 ```
 
-Set devet cluster to use with local transactions
+cd to the project
 
 ```bash
-solana config set --url https://api.devnet.solana.com
+cd anchor_hello_world
 ```
-
-Airdrop wallet with devent Solana
-
-```bash
-solana airdrop 1
-```
-
-`Refer` [Solana docs](https://docs.solana.com/cli/install-solana-cli-tools) `for more command related to solana CLI and for installing the same on windows machine.`
 
 ---
-
-### `Hello World Solana Program`
-
-Start a new rust library project using
-
-```bash
-cargo init hello_world --lib
-
-cd hello_world
-```
-
-Update `Cargo.toml` file with required rust library configurations
-
-```
-[lib]
-name = "hello_world"
-crate-type = ["cdylib", "lib"]
-```
-
-Install the `solana_program` package using
-
-```
-cargo add solana_program
-```
-
-Hello World Program
-
-```rs
-use solana_program::{
-    account_info::AccountInfo,
-    entrypoint,
-    entrypoint::ProgramResult,
-    pubkey::Pubkey,
-    msg,
-};
-
-entrypoint!(process_instruction);
-
-pub fn process_instruction(
-    program_id: &Pubkey,
-    accounts: &[AccountInfo],
-    instruction_data: &[u8]
-) -> ProgramResult {
-
-    msg!("Hello, world!");
-
-    Ok(())
-}
-```
-
-Build the Solana Rust Program using
-
-```bash
-cargo build-bpf
-```
-
-Once built successfully without any error `.so` of the program will be added to the `/target/deploy` folder. You can deploy this to solana cluster using.
-
-```
-solana program deploy ./target/deploy/hello_world.so
-```
-
-Once successfully deployed it will return the programId of the Solana Program.
 
 ### `Testing in frontend`
 
 📄 Clone the repo:
 
 ```sh
-git clone https://github.com/johnvsnagendra/solana-smart-contract-helloWorld.git
+git clone https://github.com/johnversus/solana-anchor-dapp-helloworld.git
 ```
 
 💿 Install all dependencies:
 
 ```sh
-cd solana-smart-contract-helloWorld
+cd solana-anchor-dapp-helloworld
 yarn install
 ```
 

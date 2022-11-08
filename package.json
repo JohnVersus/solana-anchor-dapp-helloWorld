@@ -17,6 +17,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@moralisweb3/eslint-config": "^1.0.0",
+    "@project-serum/anchor": "^0.25.0",
     "@solana-mobile/wallet-adapter-mobile": "^0.9.1",
     "@solana/wallet-adapter-base": "^0.9.16",
     "@solana/wallet-adapter-react": "^0.15.18",

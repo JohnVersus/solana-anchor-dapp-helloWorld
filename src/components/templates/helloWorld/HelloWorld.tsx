@@ -1,81 +1,51 @@
 import { Heading, Box, useColorModeValue, Button, Flex, Code } from '@chakra-ui/react';
-import { FC, useEffect, useState } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
-import {
-  Connection,
-  clusterApiUrl,
-  Transaction,
-  TransactionInstruction,
-  SystemProgram,
-  PublicKey,
-} from '@solana/web3.js';
-
+import { FC, useState } from 'react';
+import { useAnchorWallet } from '@solana/wallet-adapter-react';
+import { Connection, clusterApiUrl, PublicKey } from '@solana/web3.js';
+import { Program, setProvider, AnchorProvider, Idl } from '@project-serum/anchor';
+import idl from './idl/anchor_hello_world.json';
 const HelloWorld: FC = () => {
   const hoverTrColor = useColorModeValue('gray.100', 'gray.700');
-  const { publicKey, sendTransaction } = useWallet();
   const [status, setStatus] = useState('');
   const [txLogs, setTxLogs] = useState<string[]>(['']);
 
-  const programId = '3Adih9H8CheKTKfmmUYtr8cksbwoxvhWzsdupK6MfJAX';
-
+  const wallet = useAnchorWallet();
   const connection = new Connection(clusterApiUrl('devnet'));
 
+  const programId = idl.metadata.address;
+  const PROGRAM_KEY = new PublicKey(programId);
   const runHelloWorld = async () => {
-    if (!publicKey) {
+    if (!wallet) {
+      throw new Error('No Wallet available');
+    }
+
+    const provider = new AnchorProvider(connection, wallet, {});
+    setProvider(provider);
+    const program = new Program(idl as Idl, PROGRAM_KEY, provider);
+    if (!idl) {
+      throw new Error('Invalid IDL');
+    }
+    if (!wallet.publicKey) {
       throw new Error('Missing Wallet Public Key');
     }
-    const transaction = new Transaction();
     setStatus('Processing Transaction');
     setTxLogs(['']);
-    transaction.add(
-      new TransactionInstruction({
-        keys: [
-          {
-            pubkey: publicKey,
-            isSigner: true,
-            isWritable: false,
-          },
-          {
-            pubkey: SystemProgram.programId,
-            isSigner: false,
-            isWritable: false,
-          },
-        ],
-        programId: new PublicKey(programId),
-      }),
-    );
-
-    const {
-      context: { slot: minContextSlot },
-      value: { blockhash, lastValidBlockHeight },
-    } = await connection.getLatestBlockhashAndContext();
-
     try {
-      const signature = await sendTransaction(transaction, connection, {
-        minContextSlot,
-        skipPreflight: true,
-        signers: [],
+      const signature = await program.methods.sayHello().rpc({
         preflightCommitment: 'processed',
       });
-      console.log({ blockhash, lastValidBlockHeight, signature, minContextSlot });
-
-      const confirmtx = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
-      console.log({ signature, confirmtx });
       const txdata = await connection.getParsedTransaction(signature);
       if (txdata?.meta?.logMessages) {
         setTxLogs(txdata?.meta?.logMessages);
       }
       console.log({ data: txdata?.meta?.logMessages });
+      console.log(signature);
       setStatus('');
     } catch (e) {
       console.log(e);
       setStatus('');
     }
   };
-
-  useEffect(() => {
-    console.log(publicKey?.toString());
-  }, [publicKey]);
 
   return (
     <>

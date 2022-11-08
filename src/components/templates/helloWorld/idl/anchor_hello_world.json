@@ -1,0 +1,14 @@
+{
+  "version": "0.1.0",
+  "name": "anchor_hello_world",
+  "instructions": [
+    {
+      "name": "sayHello",
+      "accounts": [],
+      "args": []
+    }
+  ],
+  "metadata": {
+    "address": "EBWgAbXGLi1G3UN2Wovnbv2kdWe5CNheeZDWLXER52Ca"
+  }
+}
