@@ -3,12 +3,12 @@
   "name": "anchor_hello_world",
   "instructions": [
     {
-      "name": "sayHello",
+      "name": "initialize",
       "accounts": [],
       "args": []
     }
   ],
   "metadata": {
-    "address": "EBWgAbXGLi1G3UN2Wovnbv2kdWe5CNheeZDWLXER52Ca"
+    "address": "5hWaZMY7RfeFSzNAsFVU8TiQMKn6aZoBRaqNHfur88kw"
   }
 }

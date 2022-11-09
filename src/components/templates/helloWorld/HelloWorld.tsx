@@ -31,7 +31,7 @@ const HelloWorld: FC = () => {
     setStatus('Processing Transaction');
     setTxLogs(['']);
     try {
-      const signature = await program.methods.sayHello().rpc({
+      const signature = await program.methods.initialize().rpc({
         preflightCommitment: 'processed',
       });
       const txdata = await connection.getParsedTransaction(signature);
